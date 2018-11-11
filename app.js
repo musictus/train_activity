@@ -14,33 +14,36 @@ firebase.initializeApp(config);
 
     var name = "";
     var destination = "";
-    var firstTime = "";
+    var firstTime = "00:00";
     var trainFrequency = 0;
 
-    var nextTrain = 0;
+    var nextTrain = "00:00";
     var minutesAway = 0;
 
 
     // Capture Button Click
-    $("#add-employee").on("click", function(event) {
+    $("#submit-train").on("click", function(event) {
 
         event.preventDefault();
         // Grabbed values from text boxes
         name = $("#input-name").val().trim();
         destination = $("#input-destination").val().trim();
         firstTime = $("#input-time").val().trim();
+        console.log(firstTime);
         trainFrequency = $("#input-frequency").val().trim();
 
         // First Time (pushed back 1 year to make sure it comes before current time)
         var firstTimeConverted = moment(firstTime, "HH,mm").subtract(1, "years");
+        console.log(firstTimeConverted);
         // Current Time
         var timeNow = moment();
+        console.log(timeNow);
         // Difference between the times
         var diffTime = timeNow.diff(moment(firstTimeConverted), "minutes");
         // Time apart (remainder)
-        var tRemainder = diffTime % tFrequency;
+        var tRemainder = diffTime % trainFrequency;
         // Minute Until Train
-        minutesAway = tFrequency - tRemainder;
+        minutesAway = trainFrequency - tRemainder;
         // Next Train
         nextTrain = moment().add(minutesAway, "minutes");
 
@@ -50,8 +53,10 @@ firebase.initializeApp(config);
         database.ref().push({
             name: name,
             destination: destination,
-            firstTime: firstTime,
+            firstTimeConverted: firstTimeConverted,
             trainFrequency: trainFrequency,
+            nextTrain: nextTrain,
+            minutesAway: minutesAway,
             timeAdded: firebase.database.ServerValue.TIMESTAMP
         });
     });
@@ -69,7 +74,7 @@ firebase.initializeApp(config);
         var minutesAwayAppend = "<td>" + minutesAway + "</td>";
 
         // Change the HTML to reflect
-        $("#table-data").append( "<tr>" + nameAppend + destinationAppend + frequencyAppend + timeAppend + minutesAwayAppend + totalBilledAppend + "</tr>" );
+        $("#table-data").append( "<tr>" + nameAppend + destinationAppend + frequencyAppend + timeAppend + minutesAwayAppend + "</tr>" );
 
         // Handle the errors
         }, function(errorObject) {
