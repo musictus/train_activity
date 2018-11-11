@@ -14,10 +14,11 @@ firebase.initializeApp(config);
 
     var name = "";
     var destination = "";
-    var firstTime = "00:00";
+    var firstTime = "";
     var trainFrequency = 0;
 
-    var nextArrival = "00:00";
+    var nextTrain = "";
+    var nextArrival = "";
     var minutesAway = 0;
 
 
@@ -34,7 +35,7 @@ firebase.initializeApp(config);
         console.log(trainFrequency);
 
         // First Time (pushed back 1 year to make sure it comes before current time)
-        var firstTimeConverted = moment(firstTime, "HH,mm");
+        var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
         console.log(firstTimeConverted);
         // Current Time
         var timeNow = moment();
@@ -43,24 +44,24 @@ firebase.initializeApp(config);
         var diffTime = timeNow.diff(moment(firstTimeConverted), "minutes");
         // Time apart (remainder)
         var tRemainder = diffTime % trainFrequency;
+        console.log(tRemainder);
         // Minute Until Train
         minutesAway = trainFrequency - tRemainder;
+        console.log("minutes away: "+ minutesAway);
         // Next Train
-        var nextTrain = moment().add(minutesAway, "minutes");
+        nextTrain = moment().add(minutesAway, "minutes");
         console.log(nextTrain);
-        nextArrival = moment(nextTrain).format("hh:mm");
+
+        nextArrival = moment(nextTrain).format("h:mm a");
         console.log(nextArrival);
-
-
 
         // Code for handling the push
         database.ref().push({
             name: name,
             destination: destination,
-            // firstTimeConverted: firstTimeConverted,
             trainFrequency: trainFrequency,
-            // nextTrain: nextTrain,
-            // minutesAway: minutesAway,
+            nextArrival: nextArrival,
+            minutesAway: minutesAway,
             timeAdded: firebase.database.ServerValue.TIMESTAMP
         });
     });
