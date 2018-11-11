@@ -17,7 +17,7 @@ firebase.initializeApp(config);
     var firstTime = "00:00";
     var trainFrequency = 0;
 
-    var nextTrain = "00:00";
+    var nextArrival = "00:00";
     var minutesAway = 0;
 
 
@@ -31,9 +31,10 @@ firebase.initializeApp(config);
         firstTime = $("#input-time").val().trim();
         console.log(firstTime);
         trainFrequency = $("#input-frequency").val().trim();
+        console.log(trainFrequency);
 
         // First Time (pushed back 1 year to make sure it comes before current time)
-        var firstTimeConverted = moment(firstTime, "HH,mm").subtract(1, "years");
+        var firstTimeConverted = moment(firstTime, "HH,mm");
         console.log(firstTimeConverted);
         // Current Time
         var timeNow = moment();
@@ -45,7 +46,10 @@ firebase.initializeApp(config);
         // Minute Until Train
         minutesAway = trainFrequency - tRemainder;
         // Next Train
-        nextTrain = moment().add(minutesAway, "minutes");
+        var nextTrain = moment().add(minutesAway, "minutes");
+        console.log(nextTrain);
+        nextArrival = moment(nextTrain).format("hh:mm");
+        console.log(nextArrival);
 
 
 
@@ -53,10 +57,10 @@ firebase.initializeApp(config);
         database.ref().push({
             name: name,
             destination: destination,
-            firstTimeConverted: firstTimeConverted,
+            // firstTimeConverted: firstTimeConverted,
             trainFrequency: trainFrequency,
-            nextTrain: nextTrain,
-            minutesAway: minutesAway,
+            // nextTrain: nextTrain,
+            // minutesAway: minutesAway,
             timeAdded: firebase.database.ServerValue.TIMESTAMP
         });
     });
@@ -70,7 +74,7 @@ firebase.initializeApp(config);
         var nameAppend = "<td>" + (sv.name) + "</td>";
         var destinationAppend = "<td>" + (sv.destination) + "</td>";
         var frequencyAppend = "<td>" + (sv.trainFrequency) + "</td>";
-        var timeAppend = "<td>" + (sv.nextTrain) + "</td>";
+        var timeAppend = "<td>" + (sv.nextArrival) + "</td>";
         var minutesAwayAppend = "<td>" + minutesAway + "</td>";
 
         // Change the HTML to reflect
