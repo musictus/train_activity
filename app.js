@@ -1,6 +1,8 @@
+require('dotenv').config()
+
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyDOtXiim5D2LNXlLeYwWofAmYODUOV0TNw",
+    apiKey: process.env.KEY,
     authDomain: "sung-test.firebaseapp.com",
     databaseURL: "https://sung-test.firebaseio.com",
     projectId: "sung-test",

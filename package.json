@@ -1,0 +1,23 @@
+{
+  "name": "train_activity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/musictus/train_activity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/musictus/train_activity/issues"
+  },
+  "homepage": "https://github.com/musictus/train_activity#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0"
+  }
+}
